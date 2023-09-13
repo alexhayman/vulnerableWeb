@@ -1,2 +1,0 @@
-# vulnerableWeb
-Vulnerable website

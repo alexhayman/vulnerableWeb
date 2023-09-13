@@ -1,0 +1,45 @@
+@font-face {
+    font-family:"pixeloid";
+    src: url("fonts/PixeloidSansBold-RpeJo.ttf") format("truetype");
+}
+
+* {
+    font-family: pixeloid;
+}
+
+
+nav {
+    background-color: #1266F1;      
+}
+
+footer {
+    background-color: #332C49;
+}
+
+section {
+    background-color: #F9F8FF; 
+}
+
+small {
+    color: #F2003A;
+}
+
+#profile-image {
+    object-fit: cover;
+    height: 256px;
+    width: 256px; 
+}
+
+
+#item-image {
+    object-fit: cover;
+    height: 512px;
+    width: 512px; 
+}
+
+
+#item-thumbnail {
+    object-fit: cover;
+    height: 256px;
+    width: 256px; 
+}

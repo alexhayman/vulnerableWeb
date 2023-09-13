@@ -1,0 +1,26 @@
+version:  '3.8'
+services:
+  php-apache-environment:
+    container_name: php-apache
+    image: php:8.1-apache
+    build: .
+    depends_on:
+      - db
+    volumes:
+      - ./:/var/www/html/
+    ports:
+      - 80:80
+  db:
+      container_name: db
+      image: mysql
+      restart: always
+      environment:
+          MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
+          MYSQL_DATABASE: pixelated
+          MYSQL_USER: pixel
+          MYSQL_PASSWORD: IL1kePixels
+      volumes:
+        - ./data:/docker-entrypoint-initdb.d
+      ports:
+          - 3306:3306
+
