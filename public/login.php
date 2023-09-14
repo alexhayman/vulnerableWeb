@@ -8,10 +8,20 @@ require __DIR__ . '/../src/login.php';
     <section class="py-5 wrapper flex-grow-1">
         <div class="container">
             <div class="row justify-content-center ">
-                <div class="col-lg-6 col-md-8">  
+                <div class="col-6">  
                     <div class="card">
                         <div class="card-title text-center border-bottom">
-                            <h2 class="p-4">Login</h2>
+                            <h2 class="p-4">Challenge: SQL Injection</h2>
+                        </div>
+                        <div class="card-body">
+                            <h2>Get the Admin password</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">  
+                    <div class="card">
+                        <div class="card-title text-center border-bottom">
+                            <h2 class="p-4">Login Page</h2>
                         </div>
                         <div class="card-body">
                             <form action="login.php" method="post">
@@ -32,12 +42,37 @@ require __DIR__ . '/../src/login.php';
                                 </div>
                                 <button type="submit" class="btn btn-primary">Login</button>
                             </form>
-                            <div class="text-center pt-4">
-                                <p>Not yet a member? <a href="register.php">Signup</a></p>
-                            </div>
                         </div>
                     </div>
                 </div> 
+                <div class="row pt-5">
+                <?php if($output): ?>
+                    <h1>SQL Results:</h1>
+                    <table class="table">
+                            <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Password</th>
+                            <th scope="col">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <?php 
+                                $rows = $output['result'];
+                                foreach ($rows as $row): ?>
+                                    <th scope="row"><?= $row['id'] ?></th>
+                                    <td><?= $row['username'] ?></td>
+                                    <td><?= $row['password'] ?></td>
+                                    <td><?= $row['description'] ?></td>
+                                    <h1>Hello<h1>
+                                <?php endforeach; ?>    
+                            </tr>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
+                </div>
             </div>
         </div>
     </section>

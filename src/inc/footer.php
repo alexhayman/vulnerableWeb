@@ -1,7 +1,7 @@
     <!-- Footer !-->
     <footer  class="p-4 text-white text-center">
         <div class="container">
-            <p class="lead">Copyright &copy; Pixelated</p>
+            <p class="lead">Copyright &copy; Hack Me!</p>
         </div>
     </footer>
     <script>

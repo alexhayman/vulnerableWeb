@@ -3,6 +3,8 @@
 
 $errors = [];
 $input = [];
+$output =  [];
+
 
 if (isset($_SESSION['username'])) {
     header('location: index.php');
@@ -15,7 +17,7 @@ if (post_request()) {
     // Initialise Variables
     $db = mysqli_connect($config->host, $config->username, $config->password, $config->name);
     $username = $_POST['username'];
-    $password = md5($_POST['password']);
+    $password = $_POST['password'];
     $input['username'] = $username;
 
     if(!check_request(array($username, $password))) {
@@ -28,27 +30,27 @@ if (post_request()) {
         redirect_with('login.php', ['errors' => $errors, 'input' => $input]);
     }
     else {
-        $checkUser = "SELECT username FROM user WHERE username='$username' AND password='$password' LIMIT 1";
-        $result = mysqli_query($db, $checkUser);
-        $user = mysqli_fetch_assoc($result);
-
-        // Extra code for the demo to prevent an unkown user in the sql injection
-        $usernameDB = $user["username"];
-        $checkValid = "SELECT id FROM user Where username='$usernameDB'";
-        $result = mysqli_query($db, $checkValid);
-        $validUser = mysqli_fetch_assoc($result);
-
-        if($validUser) {
-           $_SESSION['username'] = $usernameDB;
-           redirect_with('index.php');
-       } 
-       else {
+        // $checkUser = "SELECT username FROM user WHERE username='$username' AND password='$password' LIMIT 1";
+        $query = "SELECT * FROM user LIMIT 1";
+        $result = mysqli_query($db, $query);
+        $rowCount = mysqli_num_rows($result);
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }   
+        $output["result"] = $rows;
+  
+        
+    //     if($user) {
+    //        $_SESSION['username'] = $usernameDB;
+    //        redirect_with('index.php');
+    //     } 
+    //    else {
            $errors['password'] = "Username or Password is Incorrect";
-           redirect_with('login.php', ['errors' => $errors, 'input' => $input]);
-       }
+           redirect_with('login.php', ['errors' => $errors, 'input' => $input, 'output' => $output]);
+    //    }
     }
 }
 else if(get_request()) {
-    [$errors, $input] =  flash_session(array('errors', 'input'));
+    [$errors, $input, $output] =  flash_session(array('errors', 'input', 'output'));
 }
 ?>

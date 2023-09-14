@@ -1,10 +1,10 @@
 <?php $base_url = ""; ?>
     <nav class="navbar navbar-expand-lg navbar-dark py-3">
         <div class="container">
-            <a href="index.php" class="navbar-brand">Pixelated</a>
+            <a href="index.php" class="navbar-brand">Hack Me!</a>
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= $base_url ?>shop.php">Shop</a>
+                    <a class="nav-link" href="<?= $base_url ?>login.php">SQL Injection</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
@@ -21,9 +21,6 @@
                     <a class="nav-link" href="<?= $base_url ?>logout.php">Log Out</a>
                 </li>
             <?php else: ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= $base_url ?>login.php">Login</a>
-                </li>
             <?php endif; ?>
             </ul>
         </div>
