@@ -3,7 +3,7 @@ require __DIR__ . '/../src/bootstrap.php';
 require __DIR__ . '/../src/login.php';
 ?>
 
-<?php view('header', ['title' => 'Login']) ?>
+<?php view('header', ['title' => 'SQL Injection']) ?>
 <?php view('navbar') ?>
     <section class="py-5 wrapper flex-grow-1">
         <div class="container">
@@ -13,8 +13,16 @@ require __DIR__ . '/../src/login.php';
                         <div class="card-title text-center border-bottom">
                             <h2 class="p-4">Challenge: SQL Injection</h2>
                         </div>
-                        <div class="card-body">
-                            <h2>Get the Admin password</h2>
+                        <div class="card-body text-center">
+                            <h2>Get the Admin Password</h2>
+                        </div>
+                    </div>
+                    <div class="card mt-4">
+                        <div class="card-title text-center border-bottom">
+                            <h2 class="p-4">Hint</h2>
+                        </div>
+                        <div class="card-body text-center">
+                            <h5>Try and escape the SQL statment using single quotes</h5>
                         </div>
                     </div>
                 </div>
@@ -46,31 +54,35 @@ require __DIR__ . '/../src/login.php';
                     </div>
                 </div> 
                 <div class="row pt-5">
-                <?php if($output): ?>
-                    <h1>SQL Results:</h1>
-                    <table class="table">
-                            <thead>
-                            <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Password</th>
-                            <th scope="col">Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
+                <?php if(array_key_exists('result', $output)): ?>
+                    <h5>SQL Query: <?= $output['query'] ?? '' ?></h5>
+                    <h5>SQL Results:</h5>
+                    <?php if($output['result'] != ""): ?>
+                        <table class="table">
+                                <thead>
+                                <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Password</th>
+                                <th scope="col">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <?php 
                                 $rows = $output['result'];
                                 foreach ($rows as $row): ?>
-                                    <th scope="row"><?= $row['id'] ?></th>
-                                    <td><?= $row['username'] ?></td>
-                                    <td><?= $row['password'] ?></td>
-                                    <td><?= $row['description'] ?></td>
-                                    <h1>Hello<h1>
+                                    <tr>
+                                        <th scope="row"><?= $row['id'] ?></th>
+                                        <td><?= $row['username'] ?></td>
+                                        <td><?= $row['password'] ?></td>
+                                        <td><?= $row['description'] ?></td>
+                                    </tr>
                                 <?php endforeach; ?>    
-                            </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <h4>No Results</h4>
+                    <?php endif; ?>
                 <?php endif; ?>
                 </div>
             </div>

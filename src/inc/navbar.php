@@ -4,7 +4,13 @@
             <a href="index.php" class="navbar-brand">Hack Me!</a>
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
+                    <a class="nav-link" href="<?= $base_url ?>hidden.php">Hidden Message</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="<?= $base_url ?>login.php">SQL Injection</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= $base_url ?>xss.php">XSS Challenge</a>
                 </li>
             </ul>
             <ul class="navbar-nav">

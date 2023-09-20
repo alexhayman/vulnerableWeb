@@ -68,7 +68,7 @@ COMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 INSERT INTO `user` (`id`, `username`, `password`, `description`, `file_name`, `time_created`) VALUES
-(1, 'admin', 'Password123', 'AdminIsCool!', 'default.png', '2022-04-24'),
-(2, 'ben', 'cats123', 'AdminIsCool!', 'default.png', '2022-04-24'),
-(3, 'sam', 'dog123', 'AdminIsCool!', 'default.png', '2022-04-24'),
-(4, 'adam', 'trees', 'AdminIsCool!', 'default.png', '2022-04-24');
+(1, 'admin', 'Password123', 'The admin is Cool!', 'default.png', '2022-04-24'),
+(2, 'ben', 'cats123', 'I love cats!', 'default.png', '2022-04-24'),
+(3, 'sam', 'dog123', 'I love dogs!', 'default.png', '2022-04-24'),
+(4, 'adam', 'trees', 'Trees are great!', 'default.png', '2022-04-24');

@@ -1,17 +1,9 @@
 <?php 
 
-
 $errors = [];
 $input = [];
 $output =  [];
 
-
-if (isset($_SESSION['username'])) {
-    header('location: index.php');
-    ob_clean();
-}
-
- 
 if (post_request()) {
 
     // Initialise Variables
@@ -30,24 +22,34 @@ if (post_request()) {
         redirect_with('login.php', ['errors' => $errors, 'input' => $input]);
     }
     else {
-        // $checkUser = "SELECT username FROM user WHERE username='$username' AND password='$password' LIMIT 1";
-        $query = "SELECT * FROM user LIMIT 1";
-        $result = mysqli_query($db, $query);
-        $rowCount = mysqli_num_rows($result);
-        while ($row = mysqli_fetch_assoc($result)) {
-            $rows[] = $row;
-        }   
-        $output["result"] = $rows;
-  
-        
-    //     if($user) {
-    //        $_SESSION['username'] = $usernameDB;
-    //        redirect_with('index.php');
-    //     } 
-    //    else {
+        $query = "SELECT * FROM user WHERE username='$username' AND password='$password'";
+        $output["query"] = $query;
+        $query = "SELECT * FROM user WHERE username='$username ' AND password='$password '";
+        try {
+            $result = mysqli_query($db, $query);
+            if($result) {
+                $rowCount = mysqli_num_rows($result);
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $rows[] = $row;
+                }   
+                $output["result"] = $rows;
+            }
+        } catch (Exception $e) {
+                $output["result"] = "";
+        }
+
+        $stmt = $db->prepare("SELECT * FROM user WHERE username=? AND password=?");
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
+        $result= $stmt->get_result();
+        $data = $result->fetch_all();
+        if($data) {
+            redirect_with('success.php');
+        } 
+        else {
            $errors['password'] = "Username or Password is Incorrect";
            redirect_with('login.php', ['errors' => $errors, 'input' => $input, 'output' => $output]);
-    //    }
+        }
     }
 }
 else if(get_request()) {
