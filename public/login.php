@@ -18,11 +18,38 @@ require __DIR__ . '/../src/login.php';
                         </div>
                     </div>
                     <div class="card mt-4">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#1">1</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#2">2</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#3">3</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#solution">Solution</a>
+                                </li>
+                            </ul>
+                        </div>
                         <div class="card-title text-center border-bottom">
                             <h2 class="p-4">Hint</h2>
                         </div>
-                        <div class="card-body text-center">
-                            <h5>Try and escape the SQL statment using single quotes</h5>
+                        <div class="tab-content card-body text-center">
+                            <div class="tab-pane active" id="1">
+                                <h5>Try and escape the SQL statment using single quotes (use ')</h5>
+                            </div>
+                            <div class="tab-pane" id="2">
+                                <h5>Try and make the SQL statement equal True after escaping the query (use OR)</h5>
+                            </div>
+                            <div class="tab-pane" id="3">
+                                <h5>Comment out the rest of the SQL statement to avoid errors (use --)</h5>
+                            </div>
+                            <div class="tab-pane" id="solution">
+                                <h5> write <b>'OR 1=1--</b> in the usename field</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -32,7 +59,7 @@ require __DIR__ . '/../src/login.php';
                             <h2 class="p-4">Login Page</h2>
                         </div>
                         <div class="card-body">
-                            <form action="login.php" method="post">
+                            <form action="login.php" method="post" autocomplete="off">
                                 <div class="mb-3">
                                     <label class="form-label">Username</label>
                                     <input  class="form-control" name="username"
@@ -88,5 +115,4 @@ require __DIR__ . '/../src/login.php';
             </div>
         </div>
     </section>
-
 <?php view('footer') ?>

@@ -1,6 +1,6 @@
     <footer  class="p-4 text-white text-center">
         <div class="container">
-            <p class="lead">Hackeright &copy; Hack Me!</p>
+            <p class="lead">Hackeright &copy; Hack Me!  <br> All the information provided on this site are for educational purposes only. The site is no way responsible for any misuse of the information.</p>
         </div>
     </footer>
     <script>
@@ -30,7 +30,9 @@
             })
         })()
     </script>
-    <script src="bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="bootstrap/jquery.js"></script>
+    <script src="bootstrap/bootstrap.js"></script>
+    <script src="bootstrap/bootstrap.tab.js"></script>
 </main>
 </body>
 </html> 

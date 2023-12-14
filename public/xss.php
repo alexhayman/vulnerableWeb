@@ -21,12 +21,33 @@ require __DIR__ . '/../src/xss.php';
             </div>
             <div class="col-6">  
                 <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#1">1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#2">2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#solution">Solution</a>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="card-title text-center border-bottom">
                         <h2 class="p-4">Hint</h2>
                     </div>
-                    <div class="card-body text-center">
-                        <h2>Try and execute:</h2>
-                        <p>document.getElementById("page").style.backgroundColor = "red";</p>
+                    <div class="tab-content tcard-body text-center">
+                        <div class="tab-pane active" id="1">
+                            <h2>Try and execute:</h2>
+                            <p>document.getElementById("page").style.backgroundColor = "red";</p>
+                        </div>
+                        <div class="tab-pane" id="2">
+                            <h5>Use Script tags to execute javascript (&lt;script&gt;&lt;/script&gt;)</h5>
+                        </div>
+                        <div class="tab-pane" id="solution">
+                            <p>&lt;script&gt;document.getElementById("page").style.backgroundColor = "red";&lt;/script&gt;</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,7 +65,7 @@ require __DIR__ . '/../src/xss.php';
             </div>
         </div>
         <div class="row justify-content-center pt-5">
-            <div class="col">
+            <div align="center" class="col">
                 <h4><?= $text['message'] ?? '' ?></h4>
             </div>
         </div>
